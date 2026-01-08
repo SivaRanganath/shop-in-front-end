@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, linkedSignal, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import validator from 'validator';
+import { LoginService } from './login-service';
 
 @Component({
   selector: 'app-log-in',
@@ -9,8 +10,13 @@ import validator from 'validator';
   styleUrl: './log-in.scss',
 })
 export class LogIn implements AfterViewInit {
+  isFormSubmitted: boolean = false
   userSignupForm: FormGroup = new FormGroup({});
-  constructor(private fb: FormBuilder) {
+
+
+  constructor(private fb: FormBuilder,
+              private loginService: LoginService
+  ) {
     this.initializeFormBuilder();
   }
 
@@ -21,20 +27,42 @@ export class LogIn implements AfterViewInit {
     this.userSignupForm = this.fb.group({
       userName: this.fb.control('', [Validators.required, Validators.minLength(1)]),
       email: this.fb.control('', [Validators.required, Validators.email]),
-      password: this.fb.control('', [Validators.required ,this.customValidator]),
-    })
+      password: this.fb.control('', [Validators.required, this.customValidator]),
+      reenterPassword: this.fb.control('', [Validators.required])
+    },
+      {
+        validators: this.passwordMatchValidator
+      })
   }
 
   customValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
-
     if (!value) {
       return null;
     }
-
     const isStrong = validator.isStrongPassword(value);
-
     return isStrong ? null : { weakPassword: true };
+  }
+
+  passwordMatchValidator(form: AbstractControl): ValidationErrors | null {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('reenterPassword')?.value;
+
+    if (!password || !confirmPassword) {
+      return null;
+    }
+
+    return password === confirmPassword
+      ? null
+      : { passwordMismatch: true };
+  }
+
+  onFormSubmit(event: Event) {
+    event?.stopPropagation();
+    event?.preventDefault();
+    this.isFormSubmitted = true;
+    console.log(this.userSignupForm?.value);
+    this.loginService.signUpUser(this.userSignupForm.value);
   }
 }
 
