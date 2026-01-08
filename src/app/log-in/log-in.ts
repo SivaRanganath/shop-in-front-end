@@ -61,8 +61,9 @@ export class LogIn implements AfterViewInit {
     event?.stopPropagation();
     event?.preventDefault();
     this.isFormSubmitted = true;
-    console.log(this.userSignupForm?.value);
-    this.loginService.signUpUser(this.userSignupForm.value);
+    if (this.userSignupForm.valid) {
+      this.loginService.signUpUser(this.userSignupForm.value);
+    }
   }
 }
 
