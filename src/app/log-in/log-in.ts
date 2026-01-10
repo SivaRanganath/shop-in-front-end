@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, linkedSignal, signal } from '@angular/core';
+import { AfterViewInit, Component, Injector, linkedSignal, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import validator from 'validator';
 import { LoginService } from './login-service';
+import { AppComponentBase } from '../app-component-base';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -9,14 +11,17 @@ import { LoginService } from './login-service';
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })
-export class LogIn implements AfterViewInit {
+export class LogIn extends AppComponentBase implements AfterViewInit {
   isFormSubmitted: boolean = false
   userSignupForm: FormGroup = new FormGroup({});
 
 
   constructor(private fb: FormBuilder,
-              private loginService: LoginService
+              private loginService: LoginService,
+              injector: Injector,
+              private router: Router
   ) {
+    super(injector);
     this.initializeFormBuilder();
   }
 
@@ -62,13 +67,21 @@ export class LogIn implements AfterViewInit {
     event?.preventDefault();
     this.isFormSubmitted = true;
     if (this.userSignupForm.valid) {
-      this.loginService.signUpUser(this.userSignupForm.value);
+      this.spinnerService.show();
+      this.loginService.signUpUser(this.userSignupForm.value)
+     .subscribe({
+      next: (res) => {
+      this.spinnerService.hide();
+      this.notify.success("Account Created Successfully!!");
+      this.router.navigate(['/login'])
+      },
+      error: (err) => {
+      this.spinnerService.hide();
+      this.notify.error(err.message);
+      }
+     });
+    } else {
+      this.notify.warning("Required Fields Missing");
     }
   }
-}
-
-
-interface dataItem {
-  id: number;
-  field: string;
 }

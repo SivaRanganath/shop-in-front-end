@@ -40,13 +40,9 @@
       font-size: 11px;
     }
   }
-}
 
-.user-sign-up {
-  height: 450px;
-  margin-bottom: 10px;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    display: none;
+  .create-account-link {
+    text-decoration: none;
+    cursor: pointer;
   }
 }
