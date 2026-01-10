@@ -1,6 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+// @use 'igniteui-angular/theming' as *;
+// // Uncomment the following lines if you want to add a custom palette:
+// // $primary: #731963 !default;
+// // $secondary: #ce5712 !default;
+// // $app-palette: palette($primary, $secondary, $surface);
+
+// /* autoprefixer grid: on */
+
+// @include core();
+// @include typography($font-family: $material-typeface, $type-scale: $material-type-scale);
+// @include theme($default-palette);
+// // CSS Reset, comment out if not required or using a different module
+// @import 'minireset.css/minireset';
+// /* You can add global styles to this file, and also import other style files */
+
+@use 'igniteui-angular/theming' as *;
+
+@include core();
+@include typography($font-family: $material-typeface, $type-scale: $material-type-scale);
+@include theme($default-palette);
+
+$dark-navbar-theme: navbar-theme(
+  $background: #011627,
+  $idle-icon-color: #f0d5b2,
+);
+
+// Theme B
+$light-navbar-theme: navbar-theme(
+  $background: #ffffff,
+  $idle-icon-color: #333333,
+);
+
 body {
-    height: 100vh !important;
-    width: 100vw !important;
-    overflow: hidden !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden !important;
+  p {
+    margin: 0 !important;
+  }
+}
+
+.dark-theme {
+  @include navbar($dark-navbar-theme);
+}
+
+.light-theme {
+  @include navbar($light-navbar-theme);
 }

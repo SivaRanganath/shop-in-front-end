@@ -50,3 +50,20 @@
     display: none;
   }
 }
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+
+  input {
+    width: 100%;
+  }
+}

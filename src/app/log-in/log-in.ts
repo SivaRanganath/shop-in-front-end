@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class LogIn extends AppComponentBase implements AfterViewInit {
   isFormSubmitted: boolean = false
   userSignupForm: FormGroup = new FormGroup({});
+  showPassword: boolean = false;
 
 
   constructor(private fb: FormBuilder,
@@ -83,5 +84,9 @@ export class LogIn extends AppComponentBase implements AfterViewInit {
     } else {
       this.notify.warning("Required Fields Missing");
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

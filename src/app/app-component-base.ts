@@ -2,6 +2,7 @@ import { Component, Injector } from "@angular/core";
 import { environment } from "./environment";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
+import { IgxIconService } from "igniteui-angular/icon";
 
 
 @Component({
@@ -17,7 +18,7 @@ export class AppComponentBase {
     constructor(injector: Injector) {
       this.injector = injector;
       this.spinnerService = injector.get(NgxSpinnerService);
-      this.notify = injector.get(ToastrService);
+      this.notify = injector.get(ToastrService);;
     }
 
     showSpinner() {

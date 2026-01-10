@@ -29,7 +29,14 @@
       </div>
       <div class="d-flex flex-column col-8 align-self-center">
         <label for="password" class="text-start">Password</label>
-        <input type="password" id="password" formControlName="password" />
+        <div class="password-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" />
+           <i
+              class="eye"
+              [class.show]="showPassword"
+              (click)="togglePassword()">
+            </i>
+        </div>
         <small *ngIf="isFormSubmitted && userSignupForm.get('password')?.errors?.['required']"
           >password required</small
         >
